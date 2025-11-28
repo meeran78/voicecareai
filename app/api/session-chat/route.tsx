@@ -44,10 +44,10 @@ export async function GET(request: NextRequest) {
 		.where(eq(SessionChatTable.createBy, user?.primaryEmailAddress?.emailAddress));
 		return NextResponse.json(result)
 	}
-	const result = await db
-		.select()
-		.from(SessionChatTable)
-		//@ts-ignore
-		.where(eq(SessionChatTable.sessionId, sessionId));
-	return NextResponse.json(result[0]);
+	// const result = await db
+	// 	.select()
+	// 	.from(SessionChatTable)
+	// 	//@ts-ignore
+	// 	.where(eq(SessionChatTable.sessionId, sessionId));
+	// return NextResponse.json(result[0]);
 }

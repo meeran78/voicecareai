@@ -11,8 +11,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { DialogClose } from '@radix-ui/react-dialog';
-import { IconArrowRight } from '@tabler/icons-react';
-import { useState } from 'react';
+import { IconAi, IconArrowLeft, IconArrowRight, IconWand } from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
 import DrAgentCard, { doctorAgent } from './DrAgentCard';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -20,26 +20,35 @@ import { Loader2 } from 'lucide-react';
 import SuggestedDrsCard from './SuggestedDrsCard';
 
 type Props = {
-	selectedDr:doctorAgent
-}
-export function AddNewSessionDialog({selectedDr} : Props) {
+	selectedDr: doctorAgent;
+};
+export function AddNewSessionDialog({ selectedDr }: Props) {
 	const [note, setNote] = useState();
 	const [loading, setLoading] = useState(false);
 	const [suggestedDoctors, setSuggestedDoctors] = useState<doctorAgent[]>();
 	const [selectedDoctor, setSelectedDoctor] = useState<doctorAgent>();
 	const router = useRouter();
 
+	useEffect(() => {
+		if (selectedDr) setSelectedDoctor(selectedDr);
+	}, []);
+
 	const OnClickNext = async () => {
-		
 		setLoading(true);
+		//if (!selectedDr) {
 		const result = await axios.post('/api/suggest-doctors', {
 			notes: note,
+			selectedDr: selectedDr,
 		});
 		console.log(result.data);
 		setSuggestedDoctors(result.data);
+		//}
+
 		setLoading(false);
 	};
 	const onStartConsultation = async () => {
+		if (selectedDr) setSelectedDoctor(selectedDr);
+
 		setLoading(true);
 		const result = await axios.post('/api/session-chat', {
 			notes: note,
@@ -78,19 +87,17 @@ export function AddNewSessionDialog({selectedDr} : Props) {
 								/>
 							</div>
 						) : (
-							
-								<div className='grid grid-cols-3 gap-7'>
-									{suggestedDoctors.map((doctor, index) => (
-										<div key={index}>
-											<SuggestedDrsCard
-												doctorAgent={doctor}
-												setSelectedDrs={() => setSelectedDoctor(doctor)}
-												selectedDr={doctor}
-											/>
-										</div>
-									))}
-								</div>
-							
+							<div className='grid grid-cols-3 gap-7'>
+								{suggestedDoctors.map((doctor, index) => (
+									<div key={index}>
+										<SuggestedDrsCard
+											doctorAgent={doctor}
+											setSelectedDrs={() => setSelectedDoctor(doctor)}
+											selectedDr={doctor}
+										/>
+									</div>
+								))}
+							</div>
 						)}
 					</DialogDescription>
 				</DialogHeader>
@@ -99,20 +106,39 @@ export function AddNewSessionDialog({selectedDr} : Props) {
 						<Button>Cancel</Button>
 					</DialogClose>
 
-					{!suggestedDoctors && !selectedDr ? (
-						<Button disabled={!note || loading} onClick={() => OnClickNext()} className='pointer-cursor'>
+					{selectedDr ? (
+						<Button
+							disabled={!note}
+							onClick={() => onStartConsultation()}
+							className='pointer-cursor'>
+							{' '}
+							Go <IconArrowRight />
+							{loading && <Loader2 className='animate-spin' />}{' '}
+						</Button>
+					) : (
+						<>
+						{!suggestedDoctors ? (
+						<Button
+							disabled={!note || loading}
+							onClick={() => OnClickNext()}
+							className='pointer-cursor'>
 							Go <IconArrowRight />
 							{loading && <Loader2 className='animate-spin' />}
 						</Button>
 					) : (
 						<Button
 							disabled={loading || !selectedDoctor}
-							onClick={() => onStartConsultation()} className='pointer-cursor'>
+							onClick={() => onStartConsultation()}
+							className='pointer-cursor'>
 							{' '}
 							Start Consulation
 							{loading && <Loader2 className='animate-spin' />}{' '}
 						</Button>
-					)}
+					)}</>
+					)
+}
+
+					
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

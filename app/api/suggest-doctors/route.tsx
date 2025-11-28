@@ -3,15 +3,18 @@ import { AIDoctorsList } from '@/shared/drsdetails';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-	const { notes } = await request.json();
-	console.log(notes);
+	const { notes, selectedDr } = await request.json();
+	//console.log(notes);
+	//console.log(selectedDr);
+
+
 	try {
 		const completion = await openai.chat.completions.create({
 			model: 'google/gemini-2.5-flash-lite-preview-09-2025',
 			messages: [
 				// { role: 'system', content: 'You are a helpful assistant.' },
 
-				{ role: 'system', content: JSON.stringify(AIDoctorsList) },
+				{ role: 'system', content: selectedDr ? JSON.stringify(selectedDr) : JSON.stringify(AIDoctorsList) },
 				{
 					role: 'user',
 					content:
@@ -25,7 +28,7 @@ export async function POST(request: Request) {
         //@ts-ignore
         const resp = rawResp.content.trim().replace('```json', '').replace('```', '');
       
-        console.log(resp);
+        //console.log(resp);
 	
 		return NextResponse.json(JSON.parse(resp));
 	} catch (e) {
