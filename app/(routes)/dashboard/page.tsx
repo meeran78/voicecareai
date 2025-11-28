@@ -1,21 +1,15 @@
-import React from 'react';
-import HistoryList from './_components/HistoryList';
-import { Button } from '@/components/ui/button';
 import { DrsAgentList } from './_components/DrsAgentList';
 import { AddNewSessionDialog } from './_components/AddNewSessionDialog';
+import { doctorAgent } from './_components/DrAgentCard';
 
-function Dashboard() {
+function Dashboard({doctor}: {doctor:doctorAgent}) {
 	return (
 		<div>
 			<div className='flex justify-between items-center'>
-				{' '}
 				<h2 className='font-bold text-2xl'>My Dashboard</h2>
-                <AddNewSessionDialog />
+				<AddNewSessionDialog selectedDr={doctor}/>
 			</div>
-
-			<HistoryList />
-
-            <DrsAgentList />
+			<DrsAgentList />
 		</div>
 	);
 }

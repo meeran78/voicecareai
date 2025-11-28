@@ -32,7 +32,18 @@ export async function GET(request: NextRequest) {
 	const sessionId = searchParams.get('sessionId');
 	console.log(sessionId);
 	const user = await currentUser();
-
+	if (sessionId != 'all') {
+		const result = await db.select().from(SessionChatTable)
+		//@ts-ignore
+		.where(eq(SessionChatTable.sessionId, sessionId))
+		.orderBy(SessionChatTable.id);
+		return NextResponse.json(result[0]);
+	} else {
+		const result = await db.select().from(SessionChatTable)
+		//@ts-ignore
+		.where(eq(SessionChatTable.createBy, user?.primaryEmailAddress?.emailAddress));
+		return NextResponse.json(result)
+	}
 	const result = await db
 		.select()
 		.from(SessionChatTable)
