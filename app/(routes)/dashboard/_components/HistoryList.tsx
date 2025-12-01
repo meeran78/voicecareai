@@ -15,7 +15,7 @@ type Props = {
 function HistoryList() {
 
   const [historyList, setHistoryList] = useState<SessionDetail[]>([])
-  const [selectedDr, setSelectedDr] = useState<doctorAgent | null>()
+//   const [selectedDr, setSelectedDr] = useState<doctorAgent | null>()
 	const GetHistoryList = async () => {
 		const result = await axios.get('/api/session-chat?sessionId=all');
 		console.log(result.data);
@@ -38,7 +38,7 @@ function HistoryList() {
 					/>
 					<h2 className='font-bold text-xl mt-5'>No Recent Consultation</h2>
 					<p>Its look like you haven't consulted with any doctors yet.</p>
-					<AddNewSessionDialog selectedDr={selectedDr}/>
+					{/* <AddNewSessionDialog selectedDr={selectedDr}/> */}
 				</div>
 			) : (
 				
