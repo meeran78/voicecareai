@@ -31,7 +31,7 @@ export default function Provider({
 	};
 	return (
 		<div>
-			<UserDetailContext.Provider value={{ userDetail , setUserDetail }}>
+			<UserDetailContext.Provider value={userDetail}>
 				{children}
 			</UserDetailContext.Provider>
 		</div>

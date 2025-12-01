@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import { UserDetails } from "@/app/provider"
+import { UserDetail } from "@/app/provider"
 
-export const UserDetailContext = createContext<UserDetails | undefined>(undefined)
+export const UserDetailContext = createContext<UserDetail | undefined>(undefined)
