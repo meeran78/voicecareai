@@ -10,11 +10,25 @@ import Vapi from '@vapi-ai/web';
 import { IconPhoneEnd } from '@tabler/icons-react';
 import Provider from '@/app/provider';
 
+export type SessionReport = {
+	sessionId: string;
+	agent: string;
+	user: string;
+	timestamp: string;
+	chiefComplaint: string;
+	summary: string;
+	symptoms: string[];
+	duration: string;
+	severity: string;
+	medicationsMentioned: string[];
+	recommendations: string[];
+};
+
 export type SessionDetail = {
 	id: number;
 	notes: string;
 	sessionId: string;
-	report: JSON;
+	report: SessionReport;
 	selectedDr: doctorAgent;
 	createdOn: string;
 };

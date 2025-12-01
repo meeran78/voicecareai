@@ -9,12 +9,14 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { SessionDetail } from '../care-agent/[sessionId]/page';
+import moment from 'moment';
+
 type Props = {
 	item: SessionDetail;
+
 };
 
 function ViewreportDialog({ item }: Props) {
-	
 	return (
 		<Dialog>
 			<DialogTrigger>
@@ -39,15 +41,20 @@ function ViewreportDialog({ item }: Props) {
 											{item.selectedDr?.specialist}
 										</h2>
 										<h2>
-											<span className='font-bold'>Consulted On:</span> {new Date(item.createdOn).toDateString()}
+											<span className='font-bold'>Consulted On:</span>{' '}
+											{moment(new Date(item.createdOn)).fromNow()}
 										</h2>
 									</div>
 									<div>
 										<h2>
 											<span className='font-bold'>User:</span>{' '}
+											
 											{item.report?.user}
 										</h2>
-										<h2><span className='font-bold'>Agent: </span>{item.report?.agent}</h2>
+										<h2>
+											<span className='font-bold'>Agent: </span>
+											{item.report?.agent}
+										</h2>
 									</div>
 								</div>
 							</div>
@@ -69,12 +76,11 @@ function ViewreportDialog({ item }: Props) {
 								<h2 className='font-bold text-purple-500 text-lg'>Symtoms</h2>
 								<hr className='' />
 								<div>
-									 {item?.report?.symptoms.map((symptom, index) => (
+									{item?.report?.symptoms.map((symptom, index) => (
 										<ul className=''>
 											<li className='mx-8 list-disc list-inside'>{symptom}</li>
 										</ul>
-										
-									))} 
+									))}
 								</div>
 							</div>
 							<div className='mt-5'>
@@ -84,33 +90,48 @@ function ViewreportDialog({ item }: Props) {
 									<p> {item?.report?.severity} </p>
 								</div>
 							</div>
-<div className='mt-5'>
+							<div className='mt-5'>
 								<h2 className='font-bold text-purple-500 text-lg'>Symtoms</h2>
 								<hr className='' />
 								<div>
-									 {item?.report?.medicationsMentioned.map((medication, index) => (
-										<ul className=''>
-											<li className='mx-8 list-disc list-inside'>{medication}</li>
-										</ul>
-										
-									))} 
+									{item?.report?.medicationsMentioned.map(
+										(medication, index) => (
+											<ul className=''>
+												<li className='mx-8 list-disc list-inside'>
+													{medication}
+												</li>
+											</ul>
+										)
+									)}
 								</div>
 							</div>
 							<div className='mt-5'>
 								<h2 className='font-bold text-purple-500 text-lg'>Symtoms</h2>
 								<hr className='' />
 								<div>
-									 {item?.report?.recommendations.map((recommend, index) => (
+									{item?.report?.recommendations.map((recommend, index) => (
 										<ul className=''>
-											<li className='mx-8 list-disc list-inside'>{recommend}</li>
+											<li className='mx-8 list-disc list-inside'>
+												{recommend}
+											</li>
 										</ul>
-										
-									))} 
+									))}
 								</div>
 							</div>
 							<div className='mt-4'>
-								<p><span className='font-bold text-orange-600'>AI Usage Disclosure:</span></p>
-								<p> This document/content was created with assistance from AI tools. The content has been reviewed and edited by a human. While we strive for accuracy, users are advised to verify all critical information independently and exercise caution when relying on this content. </p>
+								<p>
+									<span className='font-bold text-orange-600'>
+										AI Usage Disclosure:
+									</span>
+								</p>
+								<p>
+									{' '}
+									This document/content was created with assistance from AI
+									tools. The content has been reviewed and edited by a human.
+									While we strive for accuracy, users are advised to verify all
+									critical information independently and exercise caution when
+									relying on this content.{' '}
+								</p>
 							</div>
 						</div>
 					</DialogDescription>
