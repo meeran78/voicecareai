@@ -8,17 +8,15 @@ import { doctorAgent } from './DrAgentCard';
 type props = {
 	doctorAgent: doctorAgent;
 	setSelectedDrs: any;
-	selectedDr: any;
+	selectedDr: doctorAgent;
 };
 
 function SuggestedDrsCard({ doctorAgent, setSelectedDrs, selectedDr }: props) {
-	console.log(selectedDr);
+	//console.log(selectedDr);
 	return (
 		<div
 			className={`flex flex-col items-center  border rounded-2xl p-3 
-        shadow-2xl hover:border-blue-600}   ${
-					selectedDr?.id === doctorAgent.id && 'border-blue-600 hover:cursor-pointer'
-				}`}
+        shadow-2xl hover:border-blue-600 cursor-pointer ${selectedDr?.id===doctorAgent.id && 'border-blue-600' }`}
 			onClick={() => setSelectedDrs(doctorAgent)}>
 			<Image
 				src={doctorAgent.image}

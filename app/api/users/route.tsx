@@ -2,7 +2,7 @@ import { usersTable } from '@/config/schema';
 import { currentUser } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { eq } from 'drizzle-orm';
-import {db} from '@/config/db';
+import { db } from '@/config/db';
 
 export async function POST(request: NextRequest) {
 	const user = await currentUser();
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json(users[0]);
 		} else {
 			//Create new user
-            console.log('Inside create new user');
+
 			const result = await db
 				.insert(usersTable)
 				.values({

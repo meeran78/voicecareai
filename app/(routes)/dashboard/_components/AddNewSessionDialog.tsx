@@ -11,7 +11,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { DialogClose } from '@radix-ui/react-dialog';
-import { IconAi, IconArrowLeft, IconArrowRight, IconWand } from '@tabler/icons-react';
+import {
+	IconAi,
+	IconArrowLeft,
+	IconArrowRight,
+	IconWand,
+} from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import DrAgentCard, { doctorAgent } from './DrAgentCard';
 import { useRouter } from 'next/navigation';
@@ -40,7 +45,7 @@ export function AddNewSessionDialog({ selectedDr }: Props) {
 			notes: note,
 			selectedDr: selectedDr,
 		});
-		console.log(result.data);
+		//console.log(result.data);
 		setSuggestedDoctors(result.data);
 		//}
 
@@ -56,7 +61,7 @@ export function AddNewSessionDialog({ selectedDr }: Props) {
 		});
 		//console.log(result.data);
 		if (result.data?.sessionId) {
-			console.log(result.data);
+			//console.log(result.data);
 			router.push(`/dashboard/care-agent/${result.data.sessionId}`);
 		}
 		setLoading(false);
@@ -87,17 +92,23 @@ export function AddNewSessionDialog({ selectedDr }: Props) {
 								/>
 							</div>
 						) : (
-							<div className='grid grid-cols-3 gap-7'>
+							<div>
+								
+								<div className='grid grid-cols-3 gap-7'>
 								{suggestedDoctors.map((doctor, index) => (
-									<div key={index}>
+								
 										<SuggestedDrsCard
 											doctorAgent={doctor}
 											setSelectedDrs={() => setSelectedDoctor(doctor)}
-											selectedDr={doctor}
+											//@ts-ignore
+											selectedDr={selectedDoctor}  
+											key={index}
 										/>
-									</div>
+									
 								))}
 							</div>
+							</div>
+							
 						)}
 					</DialogDescription>
 				</DialogHeader>
@@ -117,28 +128,26 @@ export function AddNewSessionDialog({ selectedDr }: Props) {
 						</Button>
 					) : (
 						<>
-						{!suggestedDoctors ? (
-						<Button
-							disabled={!note || loading}
-							onClick={() => OnClickNext()}
-							className='pointer-cursor'>
-							Go <IconArrowRight />
-							{loading && <Loader2 className='animate-spin' />}
-						</Button>
-					) : (
-						<Button
-							disabled={loading || !selectedDoctor}
-							onClick={() => onStartConsultation()}
-							className='pointer-cursor'>
-							{' '}
-							Start Consulation
-							{loading && <Loader2 className='animate-spin' />}{' '}
-						</Button>
-					)}</>
-					)
-}
-
-					
+							{!suggestedDoctors ? (
+								<Button
+									disabled={!note || loading}
+									onClick={() => OnClickNext()}
+									className='pointer-cursor'>
+									Go <IconArrowRight />
+									{loading && <Loader2 className='animate-spin' />}
+								</Button>
+							) : (
+								<Button
+									disabled={loading || !selectedDoctor}
+									onClick={() => onStartConsultation()}
+									className='pointer-cursor'>
+									{' '}
+									Start Consulation
+									{loading && <Loader2 className='animate-spin' />}{' '}
+								</Button>
+							)}
+						</>
+					)}
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

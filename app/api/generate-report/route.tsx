@@ -43,7 +43,7 @@ Only include valid fields. Respond with nothing else.}
 `;
 export async function POST(request: Request) {
 	const { sessionId, sessionInfo, messages } = await request.json();
-	console.log(sessionId, sessionInfo, messages);
+	//console.log(sessionId, sessionInfo, messages);
 	try {
 		const UserInput =
 			'AI Agent Doctor Info: ' +
@@ -70,17 +70,17 @@ export async function POST(request: Request) {
 			.replace('```json', '')
 			.replace('```', '');
 
-		console.log(resp);
-        
+		//console.log(resp);
+
 		//Save to Database
 		const result = await db
 			.update(SessionChatTable)
 			.set({
 				report: resp,
-                conversation:messages
+				conversation: messages,
 			})
 			.where(eq(SessionChatTable.sessionId, sessionId));
-console.log(result);
+		//console.log(result);
 		return NextResponse.json(JSON.parse(resp));
 	} catch (e) {
 		console.log(e);

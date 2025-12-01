@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 					content:
 						'User Notes/Symptoms:' +
 						notes +
-						', Depends on user notes and symptoms, please sugges list of doctors, return objects in json only',
+						', Depends on user notes and symptoms, please suggest list of doctors, return objects in json only',
 				},
 			],
 		});

@@ -23,14 +23,14 @@ export async function POST(request: NextRequest) {
 			.returning({ SessionChatTable });
 		return NextResponse.json(result[0].SessionChatTable);
 	} catch (e) {
-		NextResponse.json(e);
+		return NextResponse.json(e);
 	}
 }
 
 export async function GET(request: NextRequest) {
 	const { searchParams } = new URL(request.url);
 	const sessionId = searchParams.get('sessionId');
-	console.log(sessionId);
+	//console.log(sessionId);
 	const user = await currentUser();
 	if (sessionId != 'all') {
 		const result = await db.select().from(SessionChatTable)
@@ -42,6 +42,7 @@ export async function GET(request: NextRequest) {
 		const result = await db.select().from(SessionChatTable)
 		//@ts-ignore
 		.where(eq(SessionChatTable.createBy, user?.primaryEmailAddress?.emailAddress));
+		console.log(result);
 		return NextResponse.json(result)
 	}
 	// const result = await db

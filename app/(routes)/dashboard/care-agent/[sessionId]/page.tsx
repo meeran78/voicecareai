@@ -21,9 +21,9 @@ export type SessionDetail = {
 
 type message = {
 	role: string;
-
 	text: string;
 };
+
 function CareAgent() {
 	const { sessionId } = useParams();
 	const [sessionInfo, setSessionInfo] = useState<SessionDetail | undefined>();
@@ -40,7 +40,7 @@ function CareAgent() {
 
 	const GetSessionInfo = async () => {
 		const result = await axios.get(`/api/session-chat?sessionId=${sessionId}`);
-		console.log(result.data);
+		//console.log(result.data);
 		setSessionInfo(result.data);
 	};
 
@@ -53,7 +53,7 @@ function CareAgent() {
 		const VapiAgentConfig = {
 			name: 'AI Medical Doctor Voice Agent',
 			firstMessage:
-				"Hi there! I'm your AI Medical assistant. I'm here to help you with any health questions or concerns you might have today. How can I assist you today?",  
+				"Hi there! I'm your AI Medical assistant. I'm here to help you with any health questions or concerns you might today. How can I assist you?",  
 			transcriber: {
 				provider: 'assembly-ai',
 				language: 'en',
@@ -75,28 +75,29 @@ function CareAgent() {
 		};
 		//Calling custom vapi agent config\
 		//@ts-ignore
-		//vapi.start(VapiAgentConfig);
+		vapi.start(VapiAgentConfig);
 
 		//Below code will run default voice id setup in vapi
-		vapi.start(process.env.NEXT_PUBLIC_VAPI_VOICE_ASSISTNAT_ID);
+		//vapi.start(process.env.NEXT_PUBLIC_VAPI_VOICE_ASSISTNAT_ID);
 
 		vapi.on('call-start', () => {
-			console.log('Call started');
+			setLoading(false);
+			//console.log('Call started');
 			setCallStarted(true);
 		});
 
 		vapi.on('call-end', () => {
-			console.log('Call ended');
+			//console.log('Call ended');
 			setCallStarted(false);
 		});
 
 		vapi.on('message', (message) => {
 			if (message.type === 'transcript') {
 				const { role, transcriptType, transcript } = message;
-				console.log(`${message.role}: ${message.transcript}`);
-				if (transcriptType === 'final') {
-					setMessages((prev) => [...prev, { role, text: transcript }]);
-					setLiveTranscript(transcript);
+				//console.log(`${message.role}: ${message.transcript}`);
+				if (transcriptType == 'final') {
+					setMessages((prev) => [...prev, { role:role, text: transcript }]);
+					setLiveTranscript("");
 					setCurrentRole(null);
 				} else {
 					setLiveTranscript(transcript);
@@ -114,6 +115,7 @@ function CareAgent() {
 			setCurrentRole('user');
 		});
 	};
+
 	const EndCall = async () => {
 		console.log(vapiInstance)
 		setLoading(true);
@@ -121,17 +123,17 @@ function CareAgent() {
 		vapiInstance.stop();
 		//Optionally remove listner
 		
-		vapiInstance.off('call-start');
-		vapiInstance.off('call-end');
-		vapiInstance.off('message');
-		vapiInstance.off('speech-start');
-		vapiInstance.off('speech-end');
+		// vapiInstance.off('call-start');
+		// vapiInstance.off('call-end');
+		// vapiInstance.off('message');
+		// vapiInstance.off('speech-start');
+		// vapiInstance.off('speech-end');
 		setCallStarted(false);
 		setVapiInstance(null);
 
 		const report = await GenerateReport();
 		setLoading(false);
-		console.log(report);
+		//console.log(report);
 	};
 
 	const GenerateReport = async () => {
@@ -140,7 +142,7 @@ function CareAgent() {
 			sessionInfo: sessionInfo,
 			messages: messages,
 		});
-		console.log(result.data);
+		//console.log(result.data);
 
 		return result.data;
 	};

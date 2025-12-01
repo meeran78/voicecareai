@@ -6,10 +6,16 @@ import { AddNewSessionDialog } from './AddNewSessionDialog';
 import axios from 'axios';
 import HistoryListview from './HistoryListview';
 import { SessionDetail } from '../care-agent/[sessionId]/page';
+import { doctorAgent } from './DrAgentCard';
+
+type Props = {
+	selectedDr: doctorAgent;
+};
 
 function HistoryList() {
 
   const [historyList, setHistoryList] = useState<SessionDetail[]>([])
+  const [selectedDr, setSelectedDr] = useState<doctorAgent | null>()
 	const GetHistoryList = async () => {
 		const result = await axios.get('/api/session-chat?sessionId=all');
 		console.log(result.data);
@@ -21,7 +27,7 @@ function HistoryList() {
 
 	return (
       
-		<div className='mt-7'>
+		<div className='mt-7 '>
 			{historyList.length == 0 ? (
 				<div className='flex items-center flex-col justify-center p-7 border border-dashed rounded-2xl border-2'>
 					<Image
@@ -32,12 +38,12 @@ function HistoryList() {
 					/>
 					<h2 className='font-bold text-xl mt-5'>No Recent Consultation</h2>
 					<p>Its look like you haven't consulted with any doctors yet.</p>
-					<AddNewSessionDialog />
+					<AddNewSessionDialog selectedDr={selectedDr}/>
 				</div>
 			) : (
-				<div>
+				
           <HistoryListview historyList={historyList} />
-        </div>
+       
 			)}
 		</div>
 	);
