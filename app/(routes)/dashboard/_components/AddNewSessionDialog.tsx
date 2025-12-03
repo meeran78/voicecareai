@@ -45,7 +45,7 @@ export function AddNewSessionDialog({ selectedDr }: Props) {
 			notes: note,
 			selectedDr: selectedDr,
 		});
-		//console.log(result.data);
+		console.log(result.data);
 		setSuggestedDoctors(result.data);
 		//}
 
@@ -53,13 +53,15 @@ export function AddNewSessionDialog({ selectedDr }: Props) {
 	};
 	const onStartConsultation = async () => {
 		if (selectedDr) setSelectedDoctor(selectedDr);
+		console.log('onstartconsultation ->', selectedDoctor);
+
 
 		setLoading(true);
 		const result = await axios.post('/api/session-chat', {
 			notes: note,
 			selectedDr: selectedDoctor,
 		});
-		//console.log(result.data);
+		console.log(result.data);
 		if (result.data?.sessionId) {
 			//console.log(result.data);
 			router.push(`/dashboard/care-agent/${result.data.sessionId}`);
@@ -123,7 +125,7 @@ export function AddNewSessionDialog({ selectedDr }: Props) {
 							onClick={() => onStartConsultation()}
 							className='pointer-cursor'>
 							{' '}
-							Go <IconArrowRight />
+							Go 
 							{loading && <Loader2 className='animate-spin' />}{' '}
 						</Button>
 					) : (

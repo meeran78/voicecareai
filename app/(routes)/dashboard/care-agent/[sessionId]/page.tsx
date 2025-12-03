@@ -62,12 +62,12 @@ function CareAgent() {
 		setLoading(true);
 		const vapi = new Vapi(process.env.NEXT_PUBLIC_VAPI_API_KEY!);
 		setVapiInstance(vapi);
-
+		console.log(sessionInfo);
 		//Customizing the agent
 		const VapiAgentConfig = {
 			name: 'AI Medical Doctor Voice Agent',
 			firstMessage:
-				"Hi there! I'm your AI Medical assistant. I'm here to help you with any health questions or concerns you might today. How can I assist you?",  
+				"Hi there! I'm your AI Medical assistant. I'm here to help you with any health questions or concerns you might have today. How can I assist you?",
 			transcriber: {
 				provider: 'assembly-ai',
 				language: 'en',
@@ -96,12 +96,12 @@ function CareAgent() {
 
 		vapi.on('call-start', () => {
 			setLoading(false);
-			//console.log('Call started');
+			console.log('Call started');
 			setCallStarted(true);
 		});
 
 		vapi.on('call-end', () => {
-			//console.log('Call ended');
+			console.log('Call ended');
 			setCallStarted(false);
 		});
 
@@ -110,8 +110,8 @@ function CareAgent() {
 				const { role, transcriptType, transcript } = message;
 				//console.log(`${message.role}: ${message.transcript}`);
 				if (transcriptType == 'final') {
-					setMessages((prev) => [...prev, { role:role, text: transcript }]);
-					setLiveTranscript("");
+					setMessages((prev) => [...prev, { role: role, text: transcript }]);
+					setLiveTranscript('');
 					setCurrentRole(null);
 				} else {
 					setLiveTranscript(transcript);
@@ -131,12 +131,12 @@ function CareAgent() {
 	};
 
 	const EndCall = async () => {
-		console.log(vapiInstance)
+		console.log(vapiInstance);
 		setLoading(true);
 		if (!vapiInstance) return;
 		vapiInstance.stop();
 		//Optionally remove listner
-		
+
 		// vapiInstance.off('call-start');
 		// vapiInstance.off('call-end');
 		// vapiInstance.off('message');
